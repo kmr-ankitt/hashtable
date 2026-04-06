@@ -2,8 +2,6 @@
 
 A simple hash table implementation in C
 
----
-
 ## Build Instructions
 
 Make sure you have CMake and Ninja installed.
@@ -12,8 +10,6 @@ Make sure you have CMake and Ninja installed.
 cmake -B build -G Ninja
 cmake --build build
 ```
-
----
 
 ## Run
 
