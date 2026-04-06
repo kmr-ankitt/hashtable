@@ -7,8 +7,6 @@
 
 /**
  * ht_new_item - creates a new hash table item
- * @key: the key of the item
- * @value: the value of the item
  **/
 
 static ht_item *ht_new_item(const char *key, const char *value) {
@@ -21,6 +19,7 @@ static ht_item *ht_new_item(const char *key, const char *value) {
 
 /**
  * ht_new - creates a new hash table
+ *
  * initialize size 53, count 0, items to NULL
  **/
 
@@ -53,9 +52,7 @@ void ht_del_hash_table(ht_hash_table *ht) {
 
 /**
  * ht_hash - calculates a hash for a given string
- * @s: the string to hash
- * @a: the prime number to use as a multiplier
- * @buckets: the number of buckets in the hash table
+ *
  * It uses the polynomial rolling hash algorithm, which is a common and
  *efficient way to hash strings. The choice of a prime number for 'a' helps to
  *reduce collisions, and the modulus operator ensures that the hash value fits
@@ -71,4 +68,21 @@ int ht_hash(const char *s, const int a, const int buckets) {
   }
 
   return (int)hash;
+}
+
+/**
+ * ht_get_hash - calculates the hash for given string
+ *
+ * Uses double hashing to calculate the hash value for a given string to handle
+ *collisions in the hash table. It combines two different hash functions
+ *(ht_hash with different prime numbers) to generate a new hash value based on
+ *the number of attempts (collisions) that have occurred. This approach helps to
+ *reduce the likelihood of collisions and ensures a more even distribution of
+ *hash values across the buckets in the hash table.
+ **/
+int ht_get_hash(const char *s, const int num_buckets, const int attempt) {
+  const int hash_a = ht_hash(s, HT_PRIME_1, num_buckets);
+  const int hash_b = ht_hash(s, HT_PRIME_2, num_buckets);
+
+  return (hash_a + (attempt * (hash_b + 1))) % num_buckets;
 }

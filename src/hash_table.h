@@ -1,3 +1,6 @@
+#define HT_PRIME_1 151
+#define HT_PRIME_2 163
+
 /**
  * ht_item
  * A hash table item which contains a key and a value.
