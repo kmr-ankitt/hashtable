@@ -32,3 +32,20 @@ ht_hash_table *ht_new() {
 
   return ht;
 }
+
+static void ht_del_item(ht_item *item) {
+  free(item->key);
+  free(item->value);
+  free(item);
+}
+
+void ht_del_hash_table(ht_hash_table *ht) {
+  for (int i = 0; i < ht->size; i++) {
+    ht_item *item = ht->items[i];
+    if (item != NULL)
+      ht_del_item(item);
+  }
+
+  free(ht->items);
+  free(ht);
+}
