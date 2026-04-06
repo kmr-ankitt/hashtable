@@ -3,18 +3,22 @@
  * A hash table item which contains a key and a value.
  **/
 
-typedef struct{
-  char* key;
-  char* value;
+typedef struct {
+  char *key;
+  char *value;
 } ht_item;
 
 /**
  * ht_hash_table
- * A hash table which stores the size of the hash table, the count of items in the hash table and array of pointers to items.
+ * A hash table which stores the size of the hash table, the count of items in
+ * the hash table and array of pointers to items.
  **/
 
-typedef struct{
+typedef struct {
   int size;
   int count;
-  ht_item** items;
+  ht_item **items;
 } ht_hash_table;
+
+ht_hash_table *ht_new();
+void ht_del_hash_table(ht_hash_table *ht);
