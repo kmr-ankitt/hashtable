@@ -1,5 +1,6 @@
 #include "hash_table.h"
 
+#include <math.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -48,4 +49,26 @@ void ht_del_hash_table(ht_hash_table *ht) {
 
   free(ht->items);
   free(ht);
+}
+
+/**
+ * ht_hash - calculates a hash for a given string
+ * @s: the string to hash
+ * @a: the prime number to use as a multiplier
+ * @buckets: the number of buckets in the hash table
+ * It uses the polynomial rolling hash algorithm, which is a common and
+ *efficient way to hash strings. The choice of a prime number for 'a' helps to
+ *reduce collisions, and the modulus operator ensures that the hash value fits
+ *within the number of buckets in the hash table.
+ **/
+int ht_hash(const char *s, const int a, const int buckets) {
+  long hash = 0;
+  const int len_s = strlen(s);
+
+  for (int i = 0; i < len_s; i++) {
+    hash += (long)pow(a, len_s - (i + 1)) * s[i];
+    hash = hash % buckets;
+  }
+
+  return (int)hash;
 }
