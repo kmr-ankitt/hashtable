@@ -1,5 +1,6 @@
 #define HT_PRIME_1 151
 #define HT_PRIME_2 163
+#define HT_INITIAL_BASE_SIZE 50
 
 /**
  * ht_item
@@ -20,6 +21,7 @@ typedef struct {
 typedef struct {
   int size;
   int count;
+  int base_size;
   ht_item **items;
 } ht_hash_table;
 
