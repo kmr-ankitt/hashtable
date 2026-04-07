@@ -111,3 +111,27 @@ void ht_insert(ht_hash_table *ht, const char *key, const char *value) {
   ht->items[index] = item;
   ht->count++;
 }
+
+/**
+ * ht_search - searches for a key in the hash table and returns its value
+ *
+ * - calculates the index for the given key
+ * - check if it is the item we are looking for, if so return value
+ * - else use double hashing to find the next index
+ **/
+
+char *ht_search(ht_hash_table *ht, const char *key) {
+  int index = ht_get_hash(key, ht->size, 0);
+  ht_item *item = ht->items[index];
+  int i = 1;
+
+  while (item != NULL) {
+    if (strcmp(item->key, key) == 0) return item->value;
+
+    index = ht_get_hash(key, ht->size, i);
+    item = ht->items[index];
+    i++;
+  }
+
+  return NULL;
+}
