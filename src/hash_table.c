@@ -1,10 +1,8 @@
 #include "hash_table.h"
 
 #include <math.h>
-#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
-#include <threads.h>
 
 static ht_item HT_DELETED_ITEM = {NULL, NULL};
 
