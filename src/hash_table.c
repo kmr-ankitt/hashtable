@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+static ht_item HT_DELETED_ITEM = {NULL, NULL};
+
 /**
  * ht_new_item - creates a new hash table item
  **/
@@ -102,7 +104,7 @@ void ht_insert(ht_hash_table *ht, const char *key, const char *value) {
   ht_item *cur_item = ht->items[index];
   int i = 1;
 
-  while (cur_item != NULL) {
+  while (cur_item != NULL && cur_item != &HT_DELETED_ITEM) {
     index = ht_get_hash(item->key, ht->size, i);
     cur_item = ht->items[index];
     i++;
@@ -126,7 +128,9 @@ char *ht_search(ht_hash_table *ht, const char *key) {
   int i = 1;
 
   while (item != NULL) {
-    if (strcmp(item->key, key) == 0) return item->value;
+    if (item != &HT_DELETED_ITEM) {
+      if (strcmp(item->key, key) == 0) return item->value;
+    }
 
     index = ht_get_hash(key, ht->size, i);
     item = ht->items[index];
@@ -135,8 +139,6 @@ char *ht_search(ht_hash_table *ht, const char *key) {
 
   return NULL;
 }
-
-static ht_item HT_DELETED_ITEM = {NULL, NULL};
 
 /**
  * ht_delete - deletes a key from the hash table
