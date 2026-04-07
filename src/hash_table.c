@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#include <threads.h>
 
 static ht_item HT_DELETED_ITEM = {NULL, NULL};
 
@@ -96,6 +97,8 @@ int ht_get_hash(const char *s, const int num_buckets, const int attempt) {
  * - calculates the index for that item
  * - if there is a collision, it will use double hashing
  * - else insert the item into the hash table
+ *
+ * (if the key already exists, it will delete the old item and insert the new)
  **/
 
 void ht_insert(ht_hash_table *ht, const char *key, const char *value) {
@@ -104,7 +107,14 @@ void ht_insert(ht_hash_table *ht, const char *key, const char *value) {
   ht_item *cur_item = ht->items[index];
   int i = 1;
 
-  while (cur_item != NULL && cur_item != &HT_DELETED_ITEM) {
+  while (cur_item != NULL) {
+    if (cur_item != &HT_DELETED_ITEM) {
+      if (strcmp(cur_item->key, key) == 0) {
+        ht_del_item(cur_item);
+        ht->items[index] = item;
+        return;
+      }
+    }
     index = ht_get_hash(item->key, ht->size, i);
     cur_item = ht->items[index];
     i++;
