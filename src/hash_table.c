@@ -135,3 +135,34 @@ char *ht_search(ht_hash_table *ht, const char *key) {
 
   return NULL;
 }
+
+static ht_item HT_DELETED_ITEM = {NULL, NULL};
+
+/**
+ * ht_delete - deletes a key from the hash table
+ *
+ * (we don't actually delete the item, we just mark it as deleted item)
+ * - calculates the index for the given key
+ * - check if it is the item we are looking for, if so mark it as deleted
+ * - else use double hashing to find the next index
+ **/
+void ht_delete(ht_hash_table *ht, const char *key) {
+  int index = ht_get_hash(key, ht->size, 0);
+  ht_item *item = ht->items[index];
+  int i = 1;
+
+  while (item != NULL) {
+    if (item != &HT_DELETED_ITEM) {
+      if (strcmp(item->key, key) == 0) {
+        ht_del_item(item);
+        ht->items[index] = &HT_DELETED_ITEM;
+      }
+    }
+
+    index = ht_get_hash(key, ht->size, i);
+    item = ht->items[index];
+    i++;
+  }
+
+  ht->count--;
+}
