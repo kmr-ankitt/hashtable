@@ -10,3 +10,4 @@ set(SOURCES
 )
 
 add_executable(hashtable ${SOURCES})
+target_link_libraries(hashtable m)
