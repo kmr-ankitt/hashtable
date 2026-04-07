@@ -7,6 +7,7 @@ set(CMAKE_C_STANDARD 11)
 set(SOURCES
     src/main.c
     src/hash_table.c
+    src/prime.c
 )
 
 add_executable(hashtable ${SOURCES})
